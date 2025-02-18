@@ -7,6 +7,14 @@ pipeline {
         NAMESPACE = "group1-team2"
     }
     stages {
+        stage('Check java version') {
+            steps {
+                script {
+                    // Java version check
+                    sh 'java -version'
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 // Git 저장소에서 소스 코드 체크아웃 (branch 지정 : 본인 repository의 branch 이름으로 설정)
