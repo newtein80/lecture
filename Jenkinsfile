@@ -59,7 +59,7 @@ pipeline {
             steps {
                 script {
                     // Kubernetes Deployment and Service 생성 및 적용 (1일차 교육때 사용한 deploy & service 생성 yaml 파일 등록하여 사용)
-                    sh "kubectl apply -f ./yaml/spring-deployment.yaml -n ${NAMESPACE}"
+                    sh "kubectl apply -f ./spring-deployment.yaml -n ${NAMESPACE}"
                 }
             }
         }
@@ -67,7 +67,7 @@ pipeline {
             steps {
                 script {
                     // Kubernetes Deployment and Service 생성 및 적용 (1일차 교육때 사용한 deploy & service 생성 yaml 파일 등록하여 사용)
-                    sh "kubectl apply -f ./yaml/spring-service.yaml -n ${NAMESPACE}"
+                    sh "kubectl apply -f ./spring-service.yaml -n ${NAMESPACE}"
                 }
             }
         }
