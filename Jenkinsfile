@@ -5,14 +5,13 @@ pipeline {
         IMAGE_NAME = "group1-team2-springboot-app"
         IMAGE_TAG = "latest"
         NAMESPACE = "group1-team2"
+        JAVA_HOME = "/jdk-21.0.5"
+        PATH = "${JAVA_HOME}/bin:$PATH"
     }
     stages {
         stage('Check java version') {
             steps {
-                script {
-                    // Java version check
-                    sh 'java -version'
-                }
+                sh 'java -version'
             }
         }
         stage('Checkout') {
@@ -25,58 +24,38 @@ pipeline {
             steps {
                 script {
                     // Gradle 실행권한
-                    // sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH'
                     sh 'chmod +x ./gradle'
                     // Gradle 빌드 실행
                     sh '''
-                        export JAVA_HOME=/jdk-21.0.5
-                        export PATH=$JAVA_HOME/bin:$PATH
                         java -version
                         ./gradlew clean build
                     '''
-                    // sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH;./gradlew clean build'
-                    // Maven 빌드 실행 (위 두줄 주석처리 및 아래 한줄 주석해제)
-                    // sh 'mvn clean package -DskipTests'
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
-                }
+                sh "docker build -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} ."
             }
         }
         stage('Push Docker Image') {
             steps {
-                script {
-                    // Docker 이미지를 Registry Server에 푸시
-                    sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
-                }
+                sh "docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
             }
         }
         stage('Deploy to Kubernetes') {
             steps {
-                script {
-                    // Kubernetes Deployment and Service 생성 및 적용 (1일차 교육때 사용한 deploy & service 생성 yaml 파일 등록하여 사용)
-                    sh "kubectl apply -f ./spring-deployment.yaml -n ${NAMESPACE}"
-                }
+                sh "kubectl apply -f ./spring-deployment.yaml -n ${NAMESPACE}"
             }
         }
         stage('Service to Kubernetes') {
             steps {
-                script {
-                    // Kubernetes Deployment and Service 생성 및 적용 (1일차 교육때 사용한 deploy & service 생성 yaml 파일 등록하여 사용)
-                    sh "kubectl apply -f ./spring-service.yaml -n ${NAMESPACE}"
-                }
+                sh "kubectl apply -f ./spring-service.yaml -n ${NAMESPACE}"
             }
         }
         stage('Deployment Image to Update') {
             steps {
-                script {
-                    // Kubenetes에서 특정 Deployment의 컨테이너 이미지를 업데이트 (아래 이름은 중복되지 않게 주의하여 지정, deployment, selector 이름으로)
-                    sh "kubectl set image deployment/springboot-app-team2 group1-team2-app=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} --namespace=${NAMESPACE}"
-                }
+                sh "kubectl set image deployment/springboot-app-team2 group1-team2-app=${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} --namespace=${NAMESPACE}"
             }
         }
     }
