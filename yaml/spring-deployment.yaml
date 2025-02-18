@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-app-team2
+  namespace: group1-team2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: group1-team2-app
+  template:
+    metadata:
+      labels:
+        app: group1-team2-app
+    spec:
+      containers:
+      - name: group1-team2-app
+        image: k8s-vga-worker1:5000/group1-team2-springboot-app
+        imagePullPolicy: Always #IfNotPresent
+        ports:
+        - containerPort: 8080
