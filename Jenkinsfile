@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Gradle 실행권한
-                    sh 'export $PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/java:$PATH'
+                    sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH'
                     sh 'chmod +x ./gradle'
                     // Gradle 빌드 실행
                     sh './gradlew clean build'
