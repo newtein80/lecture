@@ -29,7 +29,7 @@ pipeline {
                     sh 'chmod +x ./gradle'
                     // Gradle 빌드 실행
                     sh '''
-                        export JAVA_HOME=/home/eva/user/yoon/edu/jdk-21.0.5
+                        export JAVA_HOME=/jdk-21.0.5
                         export PATH=$JAVA_HOME/bin:$PATH
                         java -version
                         ./gradlew clean build
