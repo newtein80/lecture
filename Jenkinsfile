@@ -28,7 +28,13 @@ pipeline {
                     // sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH'
                     sh 'chmod +x ./gradle'
                     // Gradle 빌드 실행
-                    sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH;./gradlew clean build'
+                    sh '''
+                        export JAVA_HOME=/home/eva/user/yoon/edu/jdk-21.0.5
+                        export PATH=$JAVA_HOME/bin:$PATH
+                        java -version
+                        ./gradlew clean build
+                    '''
+                    // sh 'export PATH=/home/eva/user/yoon/edu/jdk-21.0.5/bin/:$PATH;./gradlew clean build'
                     // Maven 빌드 실행 (위 두줄 주석처리 및 아래 한줄 주석해제)
                     // sh 'mvn clean package -DskipTests'
                 }
